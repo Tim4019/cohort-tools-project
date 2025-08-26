@@ -1,44 +1,46 @@
+// my variables
+
 const express = require("express");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const cors = require("cors")
-const PORT = 5005;
+const cors = require("cors");
+const connectDB = require("./db/connect");
+const dotenv = require("dotenv");
+// const path = require('path');
 
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
+dotenv.config();
 
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+const PORT = process.env.PORT || 5005;
 const app = express();
 
-
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
+// Middleware
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cors());
 app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(cors())
 
+//routes
+const cohortsRoutes = require("./routes/cohort.routes");
+const studentsRoutes = require("./routes/student.routes");
 
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
+app.use("/api/cohorts", cohortsRoutes);
+app.use("/api/students", studentsRoutes);
+
+// prosorino check mexri na doulepsei
+app.get("/", async (_req, res) => {
+  try {
+    return res.status(200).json("We re gucci");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+});
+
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
-  res.sendFile(__dirname + "/cohorts.json")
-})
-
-app.get("/api/students", (req, res) => {
-  res.sendFile(__dirname + "/students.json");
-});
-// START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
 });
