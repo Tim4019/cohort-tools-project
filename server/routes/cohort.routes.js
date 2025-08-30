@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// READ cohort by ID
+// Read coh by ID
 router.get('/:cohortId', async (req, res) => {
   try {
     const cohort = await Cohort.findById(req.params.cohortId);
@@ -34,7 +34,7 @@ router.get('/:cohortId', async (req, res) => {
   }
 });
 
-// UPDATE cohort
+// Upd cohort
 router.put('/:cohortId', async (req, res) => {
   try {
     const cohort = await Cohort.findByIdAndUpdate(
@@ -49,7 +49,7 @@ router.put('/:cohortId', async (req, res) => {
   }
 });
 
-// DELETE cohort
+// Del cohort
 router.delete('/:cohortId', async (req, res) => {
   try {
     const cohort = await Cohort.findByIdAndDelete(req.params.cohortId);

@@ -59,7 +59,7 @@ router.put('/:studentId', async (req, res) => {
   }
 });
 
-// DELETE student
+// Delt student
 router.delete('/:studentId', async (req, res) => {
   try {
     const student = await Student.findByIdAndDelete(req.params.studentId);
